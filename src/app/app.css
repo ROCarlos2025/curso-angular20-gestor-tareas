@@ -1,0 +1,66 @@
+main {
+  max-width: 480px;
+  margin: 3rem auto;
+  font-family: system-ui, sans-serif;
+}
+
+h1 {
+  margin-bottom: 0.25rem;
+}
+
+.contador {
+  color: #666;
+  margin-top: 0;
+}
+
+.nueva-tarea {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.nueva-tarea input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.nueva-tarea button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #d81b60;
+  color: white;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  margin-bottom: 0.4rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+
+li:hover {
+  background: #fafafa;
+}
+
+.hecha {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.vacio {
+  cursor: default;
+  color: #999;
+  text-align: center;
+}
