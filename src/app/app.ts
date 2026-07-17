@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Task } from './task';
 
@@ -16,6 +16,8 @@ export class App {
     { id: 2, titulo: 'Construir un proyecto nuevo', completada: false },
     { id: 3, titulo: 'Dominar signals', completada: true },
   ]);
+
+  pendientes = computed(() => this.tareas().filter((t) => !t.completada).length);
 
   agregar(titulo: string): void {
     const limpio = titulo.trim();
