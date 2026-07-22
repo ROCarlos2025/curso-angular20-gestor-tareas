@@ -28,6 +28,14 @@
       <li>No hay tareas. Agrega una!!</li>
     }
   </ul>
+
+  <button
+    (click)="storage.limpiarCompletadas()"
+    class="limpiarCompletadas"
+    [disabled]="!storage.hayCompletadas()"
+  >
+    Limpiar Completadas
+  </button>
 </main>
 
 <router-outlet />

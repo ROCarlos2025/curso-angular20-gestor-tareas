@@ -11,6 +11,8 @@ export class TaskStore {
 
   pendientes = computed(() => this.tareas().filter((t) => !t.completada).length);
 
+  hayCompletadas = computed(() => this.tareas().some((t) => t.completada));
+
   /**
    * Crea una nueva instancia de TaskStore y establece un efecto para guardar las tareas en el almacenamiento local cada vez que cambian.
    */
@@ -69,5 +71,13 @@ export class TaskStore {
       { id: 2, titulo: 'Construir un proyecto nuevo', completada: false },
       { id: 3, titulo: 'Dominar signals', completada: true },
     ];
+  }
+
+  /**
+   * Elimina todas las tareas completadas de la lista.
+   * @returns void
+   */
+  public limpiarCompletadas(): void {
+    this.tareas.update((lista) => lista.filter((t) => !t.completada));
   }
 }

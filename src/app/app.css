@@ -71,3 +71,20 @@ li:hover {
   color: #999;
   text-align: center;
 }
+
+.limpiarCompletadas {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #d8901b;
+  color: white;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+.limpiarCompletadas:disabled {
+  background: #d8c39a;
+  color: #fffaf0;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
