@@ -1,25 +1,29 @@
-import { signal, computed, Injectable } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import { Task } from './task';
 
-@Injectable({ providedIn: 'root' })
-export class TaskStore {
-  tareas = signal<Task[]>([
-    { id: 1, titulo: 'Aprender angular', completada: false },
-    { id: 2, titulo: 'Construir un proyecto nuevo', completada: false },
-    { id: 3, titulo: 'Dominar signals', completada: true },
-  ]);
+const STORAGE_KEY = 'tareas';
 
-  /**
-   * Computed property que devuelve el número de tareas pendientes.
-   * Esta propiedad se actualiza automáticamente cuando cambia la lista de tareas.
-   */
+@Injectable({
+  providedIn: 'root',
+})
+export class TaskStore {
+  tareas = signal<Task[]>(this.cargar());
+
   pendientes = computed(() => this.tareas().filter((t) => !t.completada).length);
 
   /**
-   * Metodo para agregar una nueva tarea a la lista
-   *
-   * @param {string} titulo
-   * @memberof App
+   * Crea una nueva instancia de TaskStore y establece un efecto para guardar las tareas en el almacenamiento local cada vez que cambian.
+   */
+  constructor() {
+    effect(() => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.tareas()));
+    });
+  }
+
+  /**
+   * Agrega una nueva tarea con el título proporcionado.
+   * @param titulo El título de la nueva tarea.
+   * @returns void
    */
   agregar(titulo: string): void {
     const limpio = titulo.trim();
@@ -34,24 +38,36 @@ export class TaskStore {
   }
 
   /**
-   * Metodo para eliminar una tarea de la lista
-   *
-   * @param {number} id
-   * @memberof App
+   * Elimina una tarea por su ID.
+   * @param id El ID de la tarea a eliminar.
    */
   eliminar(id: number): void {
     this.tareas.update((lista) => lista.filter((t) => t.id !== id));
   }
 
   /**
-   * Metodo para alternar el estado de completada de una tarea.
-   *
-   * @param {number} id
-   * @memberof App
+   * Alterna el estado de completada de una tarea por su ID.
+   * @param id El ID de la tarea a alternar.
    */
   toggle(id: number): void {
     this.tareas.update((lista) =>
       lista.map((t) => (t.id === id ? { ...t, completada: !t.completada } : t)),
     );
+  }
+
+  /** Carga las tareas desde el almacenamiento local o devuelve las tareas por defecto.
+   * @returns {Task[]} Las tareas cargadas desde el almacenamiento local o las tareas por defecto.
+   */
+  private cargar(): Task[] {
+    const guardadas = localStorage.getItem(STORAGE_KEY);
+
+    if (guardadas) {
+      return JSON.parse(guardadas);
+    }
+    return [
+      { id: 1, titulo: 'Aprender angular', completada: false },
+      { id: 2, titulo: 'Construir un proyecto nuevo', completada: false },
+      { id: 3, titulo: 'Dominar signals', completada: true },
+    ];
   }
 }
