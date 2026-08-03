@@ -3,14 +3,7 @@
   <p class="contador">Pendientes: {{ storage.pendientes() }}</p>
 
   <div class="nueva-tarea">
-    <input
-      type="text"
-      #inputTarea
-      placeholder="Nueva Tarea"
-      (keyup.enter)="storage.agregar(inputTarea.value); inputTarea.value = ''"
-    />
-
-    <button (click)="storage.agregar(inputTarea.value); inputTarea.value = ''">Agregar</button>
+    <app-task-form (agregado)="storage.agregar($event)" />
   </div>
 
   <ul>

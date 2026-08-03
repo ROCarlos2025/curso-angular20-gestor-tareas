@@ -1,0 +1,8 @@
+<input
+  type="text"
+  [ngModel]="titulo()"
+  (ngModelChange)="titulo.set($event)"
+  placeholder="Nueva Tarea"
+  (keyup.enter)="agregar()"
+/>
+<button (click)="agregar()">Agregar</button>
