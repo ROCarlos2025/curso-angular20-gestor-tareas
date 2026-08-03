@@ -1,12 +1,25 @@
-import { computed, effect, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { Task } from './task';
+import { HttpClient } from '@angular/common/http';
 
 const STORAGE_KEY = 'tareas';
+const API_URL = 'https://jsonplaceholder.typicode.com/todos?_limit=5';
+
+interface TodoApi {
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskStore {
+  // Clase 3.5
+  private http = inject(HttpClient);
+  cargando = signal(false);
+  error = signal('');
+
   tareas = signal<Task[]>(this.cargar());
 
   pendientes = computed(() => this.tareas().filter((t) => !t.completada).length);
@@ -79,5 +92,33 @@ export class TaskStore {
    */
   public limpiarCompletadas(): void {
     this.tareas.update((lista) => lista.filter((t) => !t.completada));
+  }
+
+  // Clase 3.5
+
+  /**
+   * Metodo para hacer el llamado a la API y mapear los datos de salida acorde a nuestras variables.
+   *
+   * @memberof TaskStore
+   */
+  cargarEjemplo(): void {
+    this.cargando.set(true);
+    this.error.set('');
+    this.http.get<TodoApi[]>(API_URL).subscribe({
+      next: (datos) => {
+        const tareas = datos.map((d) => ({
+          id: d.id,
+          titulo: d.title,
+          completada: d.completed,
+        }));
+        this.tareas.set(tareas);
+        this.cargando.set(false);
+      },
+      error: (err) => {
+        this.error.set('No se pudieron cargar las tareas de ejemplo');
+        this.error.set(err.message || 'Error');
+        this.cargando.set(false);
+      },
+    });
   }
 }

@@ -6,6 +6,16 @@
     <app-task-form (agregado)="storage.agregar($event)" />
   </div>
 
+  <button (click)="storage.cargarEjemplo()" class="cargar">Cargar ejemplos de la Api</button>
+
+  @if (storage.cargando()) {
+    <p class="estado">Cargando tareas...</p>
+  }
+
+  @if (storage.error()) {
+    <p class="estado error">Error: {{ storage.error() }}</p>
+  }
+
   <ul>
     @for (tarea of storage.tareas(); track tarea.id) {
       <app-task-item
