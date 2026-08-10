@@ -3,5 +3,6 @@
   @if (task().completada) {
     <span>✅</span>
   }
+  <a class="ver" [routerLink]="['/tarea', task().id]" (click)="$event.stopPropagation()">🔍</a>
   <button class="eliminar" (click)="removed.emit(task().id); $event.stopPropagation()">🗑️</button>
 </li>
